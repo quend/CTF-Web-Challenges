@@ -1,0 +1,358 @@
+<!DOCTYPE HTML>
+<html>
+<!--
+2014 Made by Sophia D'Antoine 
+-->
+	<head>
+		<title>Fairgame Web Challenges</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta name="description" content="" />
+		<meta name="keywords" content="" />
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.scrolly.min.js"></script>
+		<script src="js/jquery.poptrox.min.js"></script>
+		<script src="js/skel.min.js"></script>
+		<script src="js/init.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+		<script>
+			document.cookie="username=John Doe"
+		</script>
+		<noscript>
+			<link rel="stylesheet" href="css/skel.css" />
+			<link rel="stylesheet" href="css/style.css" />
+		</noscript>
+
+	</head>
+	<body>
+
+			<section id="header">
+				<header>
+					<h1>Fairgame by RPISEC</h1>
+					<p>Web Challenges</p>
+				</header>
+				<footer>
+					<a href="#banner" class="button style2 scrolly scrolly-centered">Proceed as you will</a>
+				</footer>
+			</section>
+		
+			<section id="banner">
+				<script>
+ 					function getCookie(name){
+    						var re = new RegExp(name + "=([^;]+)");
+    						var value = re.exec(document.cookie);
+    						return (value != null) ? unescape(value[1]) : null;
+  					}
+                                    	
+					function awesomeUsernameFunction(){
+                                         	$.ajax({
+                                        		type: "POST",
+                                        		url: "routes.php",
+                                        		async: false,
+                                        		data: {'user':getCookie("username")},
+                                         		dataType: 'text',
+                                        		complete: function(d){
+								document.getElementById('material-doc-important').innerHTML = d.responseText;
+                                        		}
+						});
+ 						return true;
+                                    	}
+				</script>
+				<header>
+					<h2>Web 100</h2>
+				</header>
+				<p>
+				It’s fully Responsive, WEB 3.0, Django-HTML10.9 ,and of course entirely vulnerable....<br />
+				Access is limited to 'SuperAdmin' only!
+				</p>
+				<footer>
+					<a href="#first" onclick="awesomeUsernameFunction();" class="button style2 scrolly">Restricted Corporate Documents</a>
+				</footer>
+			</section>
+	
+			<article id="first" class="container box style1 right">
+				<a href="#" class="image fit"><img src="images/dogecoin.jpg" alt="" /></a>
+				<div class="inner">
+					<header>
+						<h2>Corporate Documents<br/>Restricted Access</h2>
+					</header>
+					<p id="material-doc-important"> </p>
+				</div>
+			</article>
+			
+
+			<article class="container box style1 left">
+				<script>
+					function awesomeSearchFunction(){
+						if(($('#search_form').find('input[name="search"]').val().indexOf('<a')==-1) && ($('#search_form').find('input[name="search"]').val().indexOf('button')==-1)){var text = $('#search_form').find('input[name="search"]').val();
+                                         	$.ajax({
+                                        		type: "POST",
+                                        		url: "search.php",
+                                        		async: false,
+                                        		data: {'text': text},
+                                         		dataType: 'text',
+                                        		complete: function(d){
+								location.href="#second";
+								document.getElementById('search-results-mtr').innerHTML = text.concat(d.responseText);
+                                        		}
+						});}
+ 						return true;
+                                    	}
+				</script>
+				
+				<a href="#" class="image fit"><img align="middle" src="images/kid.jpg" alt="" /></a>
+				<div class="inner">
+					<header>
+						<h2>Web 200</h2>
+					</header>
+					<p>We now allow full site searchs, test our new system out below!</p>
+				<form id="search_form" action="#second">
+					<div class="row">
+						<div class="12u">
+							<input class="text" type="text" name="search" id="search" value="" placeholder="Type Here"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="12u">
+							<ul class="actions">
+								<li><input type="button" value="Submit" onclick="awesomeSearchFunction();"/></li>
+							</ul>
+						</div>
+					</div>
+				</form>
+				
+				</div>
+			</article>
+			<article id="second" class="container box style1 right">
+				<a href="#" class="image fit"><img src="images/pic01.jpg" alt="" /></a>
+				<div class="inner">
+					<header>
+						<h2>Your Search<br/>Results</h2>
+					</header>
+					<p id="search-results-mtr"> </p>
+				</div>
+			</article>
+		
+			<article class="container box style2">
+				<script>
+					function awesomeUploadFunction(){
+							var file_set = document.getElementById('uploading-file');
+							var files = file_set.files;
+							var formdata = new FormData();
+							formdata.append('photo[]',files[0],files[0].name);
+							formdata.append('html', document.getElementById('customized-html').value);
+                                         		//upload.php will test to make sure your customized html isnt trying to execute anything and that your files have *.jpg and *.gif extensions !!! 
+							$.ajax({
+                                        			type: "POST",
+                                        			url: "upload.php",
+                                        			async: false,
+                                        			data: formdata,
+								processData: false,
+								contentType: false,
+                                        			complete: function(d){
+									var text = document.getElementById('customized-html').value;
+									sessionStorage.someKey = text;
+									location.href = "#third";
+									var text2 = sessionStorage.getItem('someKey');	
+
+									if(d.responseText != "no"){
+										
+										document.getElementById('image-message').innerHTML = d.responseText;
+											var divs = document.getElementsByClassName('uploaded-img');
+												for(var i=0;i<divs.length;i++){ 
+												divs[i].innerHTML = text2;
+											}
+									}else{
+										document.getElementById('image-message').innerHTML = d.responseText;
+										if((text2.indexOf('iframe') == -1)  && (text2.indexOf('onload') == -1) && (text2.indexOf('onerror') == -1) && (text2.indexOf('web.fairgame.rpis.ec/img_uploads') >-1)){
+											var divs = document.getElementsByClassName('uploaded-img');
+												for(var i=0;i<divs.length;i++){ 
+												divs[i].innerHTML = text2;
+											}
+										}
+									}
+								}
+							});
+ 						return true;
+                                    	}
+				</script>
+				<header>
+					<h2>Web 300</h2>
+					<p>RPISEC's Beta<br /> Image Uploader + Customizable Viewer!<br/> Your image will be stored in img_uploads/$IMG_FILE_NAME<br/> 
+					<p>You can only upload gif and jpeg formats! We're checking.</p>
+					<form id="uploader_form" action="#third">
+						<div class="row">
+							<div class="6u">
+								<input class="text" type="file" name="file" id="uploading-file" value="" placeholder="Browse"/>
+							</div>
+						</div>
+						
+						<div class="row half">
+							<div class="12u">
+								<textarea id="customized-html" name="text" placeholder="You need to put Customizable HTML :) An example: <img src='http://128.213.48.51/img_uploads/$NameOfIMG' />"></textarea>
+							</div>
+						</div>
+						<div class="row">
+							<div class="12u">
+								<ul class="actions">
+									<li><input type="button" value="Upload and View" onclick="awesomeUploadFunction();"/></li>
+								</ul>
+							</div>
+						</div>
+						<div class="row">
+							<div class="12u">
+								<ul class="actions">
+									<p id="image-message"></p>
+								</ul>
+							</div>
+						</div>
+						
+					</form>
+					
+				</header>
+				
+				<div class="inner gallery" id="third">
+					<div class="row flush">
+						<div class="3u uploaded-img">
+<a href="images/1j8rYqx.jpg" class="image fit"><img alt="" src="images/ykfjfLs.jpg" /></a></div>
+						<div class="3u uploaded-img">
+<a href="images/1j8rYqx.jpg" class="image fit"><img alt="" src="images/ykfjfLs.jpg" /></a></div>
+						<div class="3u uploaded-img">
+<a href="images/1j8rYqx.jpg" class="image fit"><img alt="" src="images/ykfjfLs.jpg" /></a></div>
+						<div class="3u uploaded-img">
+<a href="images/1j8rYqx.jpg" class="image fit"><img alt="" src="images/ykfjfLs.jpg" /></a></div>
+					</div>
+					<div class="row flush">
+						<div class="3u uploaded-img">
+<a href="images/1j8rYqx.jpg" class="image fit"><img alt="" src="images/ykfjfLs.jpg" /></a></div>
+						<div class="3u uploaded-img">
+<a href="images/1j8rYqx.jpg" class="image fit"><img alt="" src="images/ykfjfLs.jpg" /></a></div>
+						<div class="3u uploaded-img">
+<a href="images/1j8rYqx.jpg" class="image fit"><img alt="" src="images/ykfjfLs.jpg" /></a></div>
+						<div class="3u uploaded-img">
+<a href="images/1j8rYqx.jpg" class="image fit"><img alt="" src="images/ykfjfLs.jpg" /></a></div>
+					</div>
+				</div>
+			</article>
+	
+	
+			<article class="container box style3">
+				<script>
+					function awesomeAESFunction(){
+							var data_to_be_aes_encrypted = $('#token_form').find('input[name="name"]').val();
+							data_to_be_aes_encrypted += $('#token_form').find('input[name="pwd"]').val() ;
+						        if((data_to_be_aes_encrypted != "SuperAdmin123456"))	
+							{ 
+								$.ajax({
+		
+                	                        			type: "POST",
+                        	                			url: "RETRIEVE_SERVER_SECRET.php",
+                                	        			async: false,
+                                        				data: {'aes_data': data_to_be_aes_encrypted},
+									dataType: 'text',
+                                        				complete: function(d){
+										location.href ="#fourth";
+										document.getElementById('token-display').innerHTML = d.responseText;
+									}
+								});
+							}else{
+								location.href ="#fourth";
+								document.getElementById('token-display').innerHTML = 'not privileged';
+								
+							}
+ 						return true;
+                                    	}
+				</script>
+				<header>
+					<h2>Web 400 Encrypted Tokens</h2>
+					<p>Enter your name and password (they must add up to 16 characters for security!), hit submit and get your session token! Hint: find the server's encrypting key.</p>
+				</header>
+				<form method="post" action="#" id="token_form">
+					<div class="row half">
+						<div class="6u"><input type="text" class="text" name="name" placeholder="Name" /></div>
+						<div class="6u"><input type="text" class="text" name="pwd" placeholder="Password" /></div>
+					</div>
+					<div class="row">
+						<div class="12u">
+							<ul class="actions">
+								<li><input type="button" onclick="awesomeAESFunction();" value="Get Consumer Token" /></li>
+							</ul>
+						</div>
+					</div>
+				</form>
+			</article>
+			<article class="container box style3" id="fourth">
+				<script>
+					function awesomeTokenFunction(){
+							var data = $('#token_form_withdraw').find('input[name="token"]').val();
+                                     			$.ajax({
+                                        			type: "POST",
+                                        			url: "CHECK_CONSUMER_TOKEN.php",
+                                        			async: false,
+                                        			data: {'aes_crypted':data},
+								dataType: 'text',
+                                        			complete: function(d){
+									alert(d.responseText);
+								}
+							});
+ 						return true;
+                                    	}
+				</script>
+				<header>
+					<h2>Consumer Token Authentication</h2>
+					<p>Hellow User, enter your token, hit submit and withdraw from your account! </p>
+				</header>
+				<form method="post" action="#" id="token_form_withdraw">
+					<div class="row">
+						<div class="12u">
+							<ul class="actions">
+								<p>Your Encrypted Consumer Token: </p><p id="token-display"></p>
+							</ul>
+						</div>
+					</div>
+					<div class="row">
+						<div class="12u"><input type="text" class="text" name="token" placeholder="Consumer Token" /></div>
+					</div>
+					<div class="row">
+						<div class="12u">
+							<ul class="actions">
+								<li><input type="button" onclick="awesomeTokenFunction();" value="Validate and Withdraw" /></li>
+							</ul>
+						</div>
+					</div>
+				</form>
+			</article>
+		
+	
+			<article class="container box ">
+			</article>
+
+			<section id="banner">
+				<script>
+				</script>
+				<header>
+					<h2>Web 500</h2>
+				</header>
+				<p>
+				To Be Continued...</p>
+				<footer>
+					<a href="#" class="button style2 scrolly">Instant Replay</a>
+				</footer>
+			</section>
+		<section id="footer">
+			<ul class="icons">
+				<li><a href="http://rpis.ec" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="http://rpis.ec" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+				<li><a href="http://rpis.ec" class="icon fa-google-plus"><span class="label">Google+</span></a></li>
+				<li><a href="http://rpis.ec" class="icon fa-pinterest"><span class="label">Pinterest</span></a></li>
+				<li><a href="http://rpis.ec" class="icon fa-dribbble"><span class="label">Dribbble</span></a></li>
+				<li><a href="http://rpis.ec" class="icon fa-linkedin"><span class="label">LinkedIn</span></a></li>
+			</ul>
+			<div class="copyright">
+				<ul class="menu">
+					<li>&copy; Fairgame CTF. All rights reserved.</li><li>Designer: <a href="mailto:dantos@rpi.edu">Sophia D'Antoine</a></li>
+				</ul>
+			</div>
+		</section>
+
+	</body>
+</html>
